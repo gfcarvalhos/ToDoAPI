@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import com.gabrielsilva.todolist.entities.User;
 import com.gabrielsilva.todolist.repositories.RepositoryUser;
 
+import at.favre.lib.crypto.bcrypt.BCrypt;
+
 @Service
 public class UserServices {
   
@@ -16,6 +18,7 @@ public class UserServices {
   private RepositoryUser repository;
 
   public User insert(User user){
+    user.setPassword(BCrypt.withDefaults().hashToString(12, user.getPassword().toCharArray()));
     return repository.save(user);
   }
 
