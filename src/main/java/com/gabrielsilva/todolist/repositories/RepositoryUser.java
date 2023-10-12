@@ -5,5 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.gabrielsilva.todolist.entities.User;
 
 public interface RepositoryUser extends JpaRepository<User, UUID> {
-  
+  User findByUsername(String username); //spring data 
 }

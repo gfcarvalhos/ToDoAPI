@@ -1,6 +1,9 @@
 package com.gabrielsilva.todolist.controlers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,7 +25,13 @@ public class UserController {
   }
 
   @PostMapping("/")
-  public User create(@RequestBody User user) {
-    return service.insert(user);
+  public ResponseEntity create(@RequestBody User user) {
+    User userTeste = service.findUser(user.getUsername());
+    if(userTeste != null){
+      System.out.println("Usuário já existe.");
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Usuário já existe");
+    }
+    User userCreated = service.insert(user);
+    return ResponseEntity.status(HttpStatus.CREATED).body(userCreated);
   }
 }
