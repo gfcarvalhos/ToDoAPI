@@ -25,8 +25,8 @@ public class TaskServices {
   }
 
   public Task findByIdTask(UUID id){
-    Optional<Task> obj = repository.findById(id);
-    return obj.get();
+    Task obj = repository.findById(id).orElse(null);
+    return obj;
   }
 
   public Task update(Task task){
