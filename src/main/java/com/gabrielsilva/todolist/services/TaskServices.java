@@ -22,4 +22,8 @@ public class TaskServices {
   public List<Task> findById(UUID id){
     return repository.findByIdUser(id);
   }
+
+  public Task update(Task task){
+    return repository.save(task);
+  }
 }

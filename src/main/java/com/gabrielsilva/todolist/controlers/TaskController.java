@@ -8,7 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,12 +30,14 @@ public class TaskController {
   @PostMapping("/")
   public ResponseEntity create(@RequestBody Task task, HttpServletRequest request) {
     task.setIdUser((UUID) request.getAttribute("idUser"));
-    
-    if(LocalDateTime.now().isAfter(task.getDateStart()) || LocalDateTime.now().isAfter(task.getDateEnd())){
-      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("A data de início/término deve ser maior que a data atual");
+
+    if (LocalDateTime.now().isAfter(task.getDateStart()) || LocalDateTime.now().isAfter(task.getDateEnd())) {
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+          .body("A data de início/término deve ser maior que a data atual");
     }
-    if(task.getDateStart().isAfter(task.getDateEnd())){
-      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("A data de início deve ser menor que a data de término");
+    if (task.getDateStart().isAfter(task.getDateEnd())) {
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+          .body("A data de início deve ser menor que a data de término");
     }
 
     service.insert(task);
@@ -41,8 +45,17 @@ public class TaskController {
   }
 
   @GetMapping("/")
-  public List<Task> findById(HttpServletRequest request){
+  public List<Task> findById(HttpServletRequest request) {
     return service.findById((UUID) request.getAttribute("idUser"));
+  }
+
+  @PutMapping("/{id}")
+  public Task updateTask(@RequestBody Task task, @PathVariable UUID id, HttpServletRequest request) {
+    task.setIdUser((UUID) request.getAttribute("idUser"));
+    task.setId(id);
+    return service.update(task);
+    // return ResponseEntity.status(HttpStatus.OK).body(updateTask);
+
   }
 
 }
