@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.gabrielsilva.todolist.entities.Task;
 import com.gabrielsilva.todolist.services.TaskServices;
+import com.gabrielsilva.todolist.utils.Utils;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -49,13 +50,17 @@ public class TaskController {
     return service.findById((UUID) request.getAttribute("idUser"));
   }
 
+  @GetMapping("/{id}")
+  public ResponseEntity<Task> findByIdTask(@PathVariable UUID id){
+    Task tasks = service.findByIdTask(id);
+    return ResponseEntity.status(HttpStatus.OK).body(tasks);
+  }
+
   @PutMapping("/{id}")
   public Task updateTask(@RequestBody Task task, @PathVariable UUID id, HttpServletRequest request) {
-    task.setIdUser((UUID) request.getAttribute("idUser"));
-    task.setId(id);
-    return service.update(task);
-    // return ResponseEntity.status(HttpStatus.OK).body(updateTask);
-
+    Task tasks = service.findByIdTask(id);
+    Utils.copyNonNullProperties(task, tasks);
+    return service.update(tasks);
   }
 
 }

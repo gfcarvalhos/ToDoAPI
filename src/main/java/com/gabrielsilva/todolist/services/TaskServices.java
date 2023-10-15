@@ -1,6 +1,7 @@
 package com.gabrielsilva.todolist.services;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,11 @@ public class TaskServices {
 
   public List<Task> findById(UUID id){
     return repository.findByIdUser(id);
+  }
+
+  public Task findByIdTask(UUID id){
+    Optional<Task> obj = repository.findById(id);
+    return obj.get();
   }
 
   public Task update(Task task){
