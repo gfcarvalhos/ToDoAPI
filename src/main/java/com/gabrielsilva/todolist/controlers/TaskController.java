@@ -12,12 +12,12 @@ import com.gabrielsilva.todolist.services.TaskServices;
 @RestController
 @RequestMapping("/tasks")
 public class TaskController {
-  
+
   @Autowired
   private TaskServices service;
 
   @PostMapping("/")
-  public Task create(@RequestBody Task task){
+  public Task create(@RequestBody Task task) {
     return service.insert(task);
   }
 
