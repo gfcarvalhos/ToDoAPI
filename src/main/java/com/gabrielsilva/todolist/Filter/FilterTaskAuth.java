@@ -1,4 +1,4 @@
-package com.gabrielsilva.todolist.Filter;
+package com.gabrielsilva.todolist.filter;
 
 import java.io.IOException;
 import java.util.Base64;
